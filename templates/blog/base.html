@@ -1,0 +1,45 @@
+{% load static%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>{% block title %}Doctor Wey Dey Code Blog{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'assets/css/blog.css' %}" />
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container">
+      <h1 class="logo"><a href="/">Doctor Wey Dey Code</a></h1>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="/">Home</a></li>
+          <li><a href="/about">About</a></li>
+          <li><a href="/contact">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="container">
+      <h2>Welcome to My Blog</h2>
+      <p>I use Python and Data to make sense of businesses. Explore insights, stories, and tutorials.</p>
+      <a href="#posts" class="btn">Start Reading</a>
+    </div>
+  </section>
+
+  <main class="container" id="posts">
+    {% block content %}
+    {% endblock %}
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>&copy; 2025 Doctor Wey Dey Code. All Rights Reserved.</p>
+    </div>
+  </footer>
+
+</body>
+</html>

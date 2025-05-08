@@ -1,0 +1,96 @@
+{% extends 'const/base.html' %}
+{% load static %}
+{% block title%} Portfolio {% endblock title %}
+{% block content %}
+  <main class="main">
+
+    <!-- Page Title -->
+    <div class="page-title dark-background">
+      <div class="container position-relative">
+        <h1>Portfolio Details</h1>
+        <p>Portfolio comprising of different personal projects and brand projects</p>
+        <nav class="breadcrumbs">
+          <ol>
+            <li><a href="index.html">Home</a></li>
+            <li class="current">Portfolio Details</li>
+          </ol>
+        </nav>
+      </div>
+    </div><!-- End Page Title -->
+
+    <!-- Portfolio Details Section -->
+    <section id="portfolio-details" class="portfolio-details section">
+
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+        <div class="row gy-4">
+
+          <div class="col-lg-8">
+            <div class="portfolio-details-slider swiper init-swiper">
+
+              <script type="application/json" class="swiper-config">
+                {
+                  "loop": true,
+                  "speed": 600,
+                  "autoplay": {
+                    "delay": 5000
+                  },
+                  "slidesPerView": "auto",
+                  "pagination": {
+                    "el": ".swiper-pagination",
+                    "type": "bullets",
+                    "clickable": true
+                  }
+                }
+              </script>
+              {% comment %} {% for portfolio_detail in portfolio_details %} {% endcomment %}
+              <div class="swiper-wrapper align-items-center">
+
+                <div class="swiper-slide">
+                  <img src="{{portfolio_detail.image1.url}}" alt="">
+                </div>
+
+                <div class="swiper-slide">
+                  <img src="{{portfolio_detail.image2.url}}" alt="">
+                </div>
+
+                <div class="swiper-slide">
+                  <img src="{{portfolio_detail.image3.url}}" alt="">
+                </div>
+
+                <div class="swiper-slide">
+                  <img src="{{portfolio_detail.image4.url}}" alt="">
+                </div>
+
+              </div>
+              <div class="swiper-pagination"></div>
+            </div>
+          </div>
+          {% comment %} {% endfor %} {% endcomment %}
+          <div class="col-lg-4">
+            <div class="portfolio-info" data-aos="fade-up" data-aos-delay="200">
+              <h3>Project information</h3>
+              <ul>
+                <li><strong>Category</strong>: {{portfolio_detail.category}}</li>
+                <li><strong>Client</strong>: {{portfolio_detail.client}}</li>
+                <li><strong>Project date</strong>: {{portfolio_detail.project_date}}</li>
+                <li><strong>Project URL</strong>: <a href="#">{{portfolio_detail.project_url}}</a></li>
+              </ul>
+            </div>
+            <div class="portfolio-description" data-aos="fade-up" data-aos-delay="300">
+              <h2>{{portfolio_detail.project_title}}</h2>
+              <p>
+                {{portfolio_detail.project_description}}
+              </p>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </section><!-- /Portfolio Details Section -->
+
+  </main>
+  {% endblock %}
+  
