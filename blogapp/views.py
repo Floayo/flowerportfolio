@@ -1,15 +1,33 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Author, Category, Blog
 from .forms import CreateBlogForm
+from django.views.generic import TemplateView, ListView
+from django.views import View
 # Create your views here.
 
-def blog_index(request):
-    blogs = Blog.objects.all()
+#Class-based views
+# class BlogIndex(TemplateView):
+#     template_name = "blog/blog-index.html"
 
-    context = {
-        "blogs": blogs
-    }
-    return render(request, "blog/blog-index.html", context)
+
+class BlogIndex(View):
+    def get(self, request): # get method
+        blogs = Blog.objects.all().order_by('-created_at')
+        #Retrieve latest blog
+        context = {
+            'blogs': blogs,
+
+        }
+        return render(request, "blog/blog-index.html", context)
+
+
+# def blog_index(request):
+#     blogs = Blog.objects.all()
+
+#     context = {
+#         "blogs": blogs
+#     }
+#     return render(request, "blog/blog-index.html", context)
 
 def blog_detail(request, blog_id):
     blog = get_object_or_404(Blog, pk=blog_id)

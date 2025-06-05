@@ -15,4 +15,5 @@ admin.site.register(ProjectPortfolio)
 class ServiceAdmin(admin.ModelAdmin):
     list_display = ["service_name", "brief_description"]
 
+
     

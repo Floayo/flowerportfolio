@@ -105,5 +105,16 @@ class PortfolioDetails(models.Model):
 
 
 
+class ContactFormLog(models.Model):
+    name = models.CharField(max_length=150)
+    email = models.CharField(max_length=150)
+    subject = models.CharField(max_length=150)
+    message = models.TextField()
+    sent_time = models.DateTimeField(null=True, blank=True)
+    is_success = models.BooleanField(default=False)
+    is_error = models.BooleanField(default=False)
+    error_message = models.TextField(blank=True, null=True)
 
+    def __str__(self):
+        return f"{self.name}" - {self.email}
 

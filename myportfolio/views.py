@@ -1,5 +1,11 @@
+from django.template.loader import render_to_string
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import MyInfo, Service, ProjectCategory, Project, PortfolioDetails, ProjectPortfolio
+from .models import MyInfo, Service, ProjectCategory, Project, PortfolioDetails, ProjectPortfolio, ContactFormLog
+from django.core.mail import send_mail
+from django.conf import settings
+from django.contrib import messages
+from django.utils import timezone
+
 # Create your views here.
 
 def home(request):
@@ -66,40 +72,87 @@ def portfolio_details(request, portfolio_id):
     return render(request, "portfolio-details.html", context)
 
 
+# def contact_form(request):
+#     # let's get all user input
+#     if request.method == "POST":
+#         name = request.POST.get('name')
+#         email = request.POST.get('email')
+#         subject = request.POST.get('subject')
+#         message = request.POST.get('message')
+#     #console print
+#         print(f"Contact Form message from {name} \n email: {email} \n subject: {subject} \n message:{message}")
+
+#     return redirect('')
+
+from django.http import HttpResponseNotAllowed, JsonResponse
+from .models import ContactFormLog  # Ensure this is imported correctly
+
 def contact_form(request):
-    # let's get all user input
-    if request.method == "POST":
-        print("Post Method in Use!")
-        name = request.POST.get('name')
-        email = request.POST.get('email')
-        subject = request.POST.get('subject')
-        message = request.POST.get('message')
+        if request.method == "POST":
+            # print("Post Method in Use!")
+            
+            # Get user input
+            name = request.POST.get('name')
+            email = request.POST.get('email')
+            subject = request.POST.get('subject')
+            message = request.POST.get('message')
 
-        print(f"{name} sent {message} ")
+            print(f"{name} sent {message}")
 
-        # send message
-        context = {
-            "name": name,
-            "email": email,
-            "subject": subject,
-            "message": message,
-        }
+            # Email context
+            context = {
+                "name": name,
+                "email": email,
+                "subject": subject,
+                "message": message,
+            }
 
-    from django.template.loader import render_to_string
-    html_text = render_to_string('client_email.html', context)
+            html_context = render_to_string('email.html', context)
 
-    from django.core.mail import send_mail
-    from django.conf import settings
+            # Set status flags
+            is_success = False
+            is_error = False
+            error_message = ""
 
-    send_mail(
-        subject=subject,
-        # message = f"{name} - {email} - {message}",
-        message = None,
-        html_message= html_text,
-        from_email= settings.EMAIL_HOST_USER,
-        recipient_list=[settings.EMAIL_HOST_USER],
-        fail_silently=False, #True is default
+            # Try sending mail
+            try:
+                send_mail(
+                    subject=subject,
+                    message=None,  # Using HTML message instead
+                    html_message=html_context,
+                    from_email=settings.EMAIL_HOST_USER,
+                    recipient_list=[settings.EMAIL_HOST_USER],
+                    fail_silently=False,
+                )
+            except Exception as e:
+                is_error = True
+                error_message = str(e)
+                print("Email failed:", error_message)
+                messages.error(request, "There was an error. Could not send email.")
+                # return JsonResponse({'success': False, 'message': str(e)})
 
-    )
+            else:
+                is_success = True
+                print("Email sent successfully.")
+                messages.success(request, "Email has been sent successfully!")
+                # return JsonResponse({'success': True})
 
-    return redirect('index')
+                # Save to ContactFormLog
+            ContactFormLog.objects.create(
+                name=name,
+                email=email,
+                subject=subject,
+                message=message,
+                sent_time=timezone.now(),
+                is_success=is_success,
+                is_error=is_error,
+                error_message=error_message,
+            )
+
+            return redirect('home')  # Update with the correct name of your homepage route
+ 
+
+    # If not POST, return a method-not-allowed response
+# return HttpResponseNotAllowed(['POST'])
+
+
