@@ -29,7 +29,7 @@ SECRET_KEY = config('SECRET_KEY')
 if ENVIRONMENT== 'development':
     DEBUG = True
 else:
-    DEBUG = False
+    DEBUG = True
 
 
 ALLOWED_HOSTS = ['*'] #Allow any host
