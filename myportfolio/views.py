@@ -22,19 +22,32 @@ def home(request):
     # portfolio_details = PortfolioDetails.objects.all()
 
     context = {
-        'name':info.name,
-        'myimage': info.my_image,
-        'title1':info.title1,
-        'title2':info.title2,
-        'phoneno': info.phoneno,
-        'location': info.location,
-        'birthday': info.birthday,
-        'email': info.email,
-        'x_handle': info.x_handle,
-        'facebook': info.facebook,
-        'instagram': info.instagram,
-        'linkedin': info.linkedIn,
-        'about': info.about,
+        'name': getattr(info, "name", ""),
+        'my_image': getattr(info, "my_image", ""),
+        'title1': getattr(info, "title1", ""),
+        'title2': getattr(info, "title2", ""),
+        'phoneno': getattr(info, "phoneno", ""),
+        'location': getattr(info, "location", ""),
+        'birthday': getattr(info, "birthday", ""),
+        'email': getattr(info, "email", ""),
+        'x_handle': getattr(info, "x_handle", ""),
+        'facebook': getattr(info, "facebook", ""),
+        'instagram': getattr(info, "instagram", ""),
+        'linkedin': getattr(info, "linkedin", ""),
+        'about': getattr(info, "about", ""),
+        # 'name':info.name,
+        # 'myimage': info.my_image,
+        # 'title1':info.title1,
+        # 'title2':info.title2,
+        # 'phoneno': info.phoneno,
+        # 'location': info.location,
+        # 'birthday': info.birthday,
+        # 'email': info.email,
+        # 'x_handle': info.x_handle,
+        # 'facebook': info.facebook,
+        # 'instagram': info.instagram,
+        # 'linkedin': info.linkedIn,
+        # 'about': info.about,
 
         # Service
         "services": services,   
@@ -129,14 +142,12 @@ def contact_form(request):
                 error_message = str(e)
                 print("Email failed:", error_message)
                 messages.error(request, "There was an error. Could not send email.")
-                # return JsonResponse({'success': False, 'message': str(e)})
-
+                
             else:
                 is_success = True
                 print("Email sent successfully.")
                 messages.success(request, "Email has been sent successfully!")
-                # return JsonResponse({'success': True})
-
+                
                 # Save to ContactFormLog
             ContactFormLog.objects.create(
                 name=name,
