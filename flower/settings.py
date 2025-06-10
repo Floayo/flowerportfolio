@@ -18,7 +18,7 @@ import dj_database_url
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 ENVIRONMENT = config('ENVIRONMENT')
-ENVIRONMENT= "production"
+# ENVIRONMENT= "production"
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
@@ -29,7 +29,7 @@ SECRET_KEY = config('SECRET_KEY')
 if ENVIRONMENT== 'development':
     DEBUG = True
 else:
-    DEBUG = True
+    DEBUG = False
 
 
 ALLOWED_HOSTS = ['*'] #Allow any host

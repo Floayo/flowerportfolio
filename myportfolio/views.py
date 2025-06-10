@@ -62,6 +62,7 @@ def home(request):
     }
     return render(request, "index.html", context)
 
+
 def service_details(request, service_id):
     service = get_object_or_404(Service, id=service_id)
     services = Service.objects.all()
